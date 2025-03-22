@@ -3,11 +3,11 @@ const { body, query } = require("express-validator");
 const validateShortenURL = [
   body("originalURL")
     .notEmpty()
-    .withMessage("originalURL is required")
+    .withMessage("Your original URL is required")
     .isURL()
-    .withMessage("originalURL must be a valid URL")
+    .withMessage("Invalid URL")
     .isLength({ max: 1000 })
-    .withMessage("originalURL must not exceed 1000 characters"),
+    .withMessage("Your origial URL must not exceed 1000 characters"),
   body("userID").optional().isString().withMessage("userID must be a string"),
 ];
 
