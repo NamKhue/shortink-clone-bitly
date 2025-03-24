@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 
-const { allowedOrigins } = require("./config/cors");
 const urlRoutes = require("./routes/urlRoutes");
 
 const app = express();
@@ -10,6 +9,11 @@ const PORT = 5000;
 
 // middleware helmet
 app.use(helmet());
+
+// get array of origins from .env
+const allowedOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(",").map((origin) => origin.trim())
+  : [];
 
 // config CORS
 app.use(
