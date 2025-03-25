@@ -15,6 +15,11 @@ let isReconnecting = false;
 
 // function to create private pool for reuse
 function createDatabasePool() {
+  const caPem = process.env.MYSQL_CA_PEM;
+  if (!caPem) {
+    throw new Error("MYSQL_CA_PEM environment variable is not set");
+  }
+
   return mysql.createPool({
     host: process.env.MYSQL_HOST || "localhost",
     user: process.env.MYSQL_USER || "root",
@@ -24,6 +29,14 @@ function createDatabasePool() {
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
+    connectTimeout: 20000, // maximum timeout for connecting
+    acquireTimeout: 20000, // timeout 20 seconds to get connection from pool
+    ssl: {
+      ca: caPem,
+
+      // ensure certificate authentication
+      rejectUnauthorized: true,
+    },
   });
 }
 
