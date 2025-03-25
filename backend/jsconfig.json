@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#config/*": ["src/config/*"],
+      "#routes/*": ["src/routes/*"],
+      "#utils/*": ["src/utils/*"],
+      "#services/*": ["src/services/*"],
+      "#controllers/*": ["src/controllers/*"],
+      "#validations/*": ["src/validations/*"]
+    }
+  },
+  "include": ["src/**/*", "server.js"],
+  "exclude": ["node_modules"]
+}

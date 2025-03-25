@@ -2,11 +2,20 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node --experimental-specifier-resolution=node server.js",
+    "dev": "nodemon --experimental-specifier-resolution=node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "imports": {
+    "#config/*": "./src/config/*.js",
+    "#routes/*": "./src/routes/*.js",
+    "#utils/*": "./src/utils/*.js",
+    "#services/*": "./src/services/*.js",
+    "#controllers/*": "./src/controllers/*.js",
+    "#validations/*": "./src/validations/*.js"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +27,8 @@
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
     "helmet": "^8.1.0",
-    "mysql2": "^3.14.0"
+    "mysql2": "^3.14.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
