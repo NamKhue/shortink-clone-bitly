@@ -1,7 +1,7 @@
-const API_BASE_URL = "http://localhost:5000/api";
-// process.env.NODE_ENV == "production"
-//   ? process.env.NEXT_PUBLIC_API_URL
-//   : process.env.LOCAL_API_URL;
+const API_BASE_URL =
+  process.env.NODE_ENV == "production"
+    ? process.env.NEXT_PUBLIC_API_URL
+    : process.env.LOCAL_API_URL;
 
 export const shortenURL = async (originalURL) => {
   try {
