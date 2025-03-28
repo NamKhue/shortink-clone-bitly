@@ -8,7 +8,7 @@ import { setShuttingDown, getShuttingDown } from "#utils/serverState";
 const PORT = process.env.PORT || 5000;
 const SHUTDOWN_TIMEOUT = process.env.SHUTDOWN_TIMEOUT || 15000;
 const CLOSING_SERVER_TIMEOUT = process.env.CLOSING_SERVER_TIMEOUT || 5000;
-const CLOSING_POOL_TIMEOUT = process.env.CLOSING_POOL_TIMEOUT || 8000;
+const CLOSING_POOL_TIMEOUT = process.env.CLOSING_POOL_TIMEOUT || 10000;
 
 (async () => {
   try {

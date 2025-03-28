@@ -17,6 +17,7 @@ let isReconnecting = false;
 function createDatabasePool() {
   const caPem = process.env.MYSQL_CA_PEM;
   if (!caPem) {
+    logger.error("MYSQL_CA_PEM environment variable is not set");
     throw new Error("MYSQL_CA_PEM environment variable is not set");
   }
 
@@ -28,8 +29,9 @@ function createDatabasePool() {
     port: process.env.MYSQL_PORT || "3306",
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0,
-    connectTimeout: 20000, // maximum timeout for connecting
+    queueLimit: 100,
+    connectTimeout: 10000, // maximum timeout for connecting
+    queryTimeout: 10000, // maximum timeout 10 seconds for each query
     ssl: {
       ca: caPem,
 
@@ -114,6 +116,7 @@ export async function stopDatabase({ timeoutMs = 5000 } = {}) {
         return;
       }
 
+      const startTime = Date.now();
       const checkInterval = setInterval(() => {
         if (!pool || !pool._allConnections) {
           clearInterval(checkInterval);
@@ -128,6 +131,8 @@ export async function stopDatabase({ timeoutMs = 5000 } = {}) {
         logger.info(`Active connections: ${activeConnections}`);
 
         if (activeConnections === 0) {
+          const elapsedTime = Date.now() - startTime;
+
           clearInterval(checkInterval);
           clearTimeout(timeout);
           resolve();
@@ -136,7 +141,13 @@ export async function stopDatabase({ timeoutMs = 5000 } = {}) {
 
       const timeout = setTimeout(() => {
         clearInterval(checkInterval);
-        reject(new Error("Timeout waiting for active connections to complete"));
+        const elapsedTime = Date.now() - startTime;
+
+        reject(
+          new Error(
+            `Timeout waiting for active connections to complete after ${elapsedTime}ms`
+          )
+        );
       }, timeoutMs);
     });
   };
